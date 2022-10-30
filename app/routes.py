@@ -8,8 +8,11 @@ from app.products import *
 @app.route('/')
 @app.route('/index')
 def index():
-    items = [1,2,3,4,5]
-    return render_template('index.html', title = 'Home', items=items)
+    products = get5RandomProducts()
+    for i in products:
+        print(i['image'])
+    return render_template('index.html', title = 'Home', products=products)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

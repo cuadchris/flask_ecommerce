@@ -8,6 +8,7 @@ def getProduct(id):
         return False
     data = response.json()
     product = {
+        'id': data['id'],
         'title': data['title'],
         'description': data['description'],
         'price': data['price'],
@@ -20,7 +21,7 @@ def get5RandomProducts():
     ids = []
     products = []
     while len(ids) < 5:
-        num = random.randrange(1, 100)
+        num = random.randrange(1, 99)
         if num not in ids:
             ids.append(num)
     for id in ids:
