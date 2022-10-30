@@ -1,0 +1,2 @@
+FLASK_APP=flask_ecommerce.py
+FLASK_ENV=development
