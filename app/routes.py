@@ -3,11 +3,13 @@ from app import app, db
 from app.models import User
 from app.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
+from app.products import *
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title = 'Home')
+    items = [1,2,3,4,5]
+    return render_template('index.html', title = 'Home', items=items)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
