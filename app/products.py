@@ -9,7 +9,7 @@ def getProduct(id):
     data = response.json()
     product = {
         'id': data['id'],
-        'title': data['title'],
+        'title': data['title'].capitalize(),
         'description': data['description'],
         'price': data['price'],
         'rating': data['rating'],

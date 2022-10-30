@@ -1,6 +1,7 @@
+from crypt import methods
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.models import User
+from app.models import User, CartItem
 from app.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.products import *
@@ -46,3 +47,16 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+# 'GET' request will return template, 'POST' request will add to shopping cart.
+@app.route('/product/<item>', methods = ['GET', 'POST'])
+def product(item):
+    item = getProduct(item)
+    if request.method == 'POST':
+        product = CartItem()
+        product.user_id = current_user.id
+        product.product_id = item['id']
+        product.quantity = request.form['quantity']
+        db.session.add(product)
+        db.session.commit()
+    return render_template('product.html', title='Product', item=item)
