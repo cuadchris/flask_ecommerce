@@ -78,22 +78,46 @@ def product(item):
         return redirect(url_for('product', item=product.product_id))
     return render_template('product.html', title='Product', item=item, itemsInCart=itemsInCart)
 
-@app.route('/category')
-def category():
-    products = get5RandomProducts()
-    return render_template('category.html', products=products)
+# @app.route('/category')
+# def category():
+#     products = get5RandomProducts()
+#     return render_template('category.html', products=products)
 
 @app.route('/smartphones')
 def smartPhones():
+    if current_user.is_authenticated:
+        items = CartItem.query.filter_by(user_id=current_user.id).all()
+        if not items:
+            itemsInCart = ''
+        else:
+            itemsInCart = len(items)
+    else:
+        itemsInCart = ''
     data = getCategory('smartphones')
-    return render_template('smartphones.html', title='Smartphones', data=data)
+    return render_template('smartphones.html', title='Smartphones', data=data, itemsInCart=itemsInCart)
 
 @app.route('/mensshoes')
 def mensShoes():
+    if current_user.is_authenticated:
+        items = CartItem.query.filter_by(user_id=current_user.id).all()
+        if not items:
+            itemsInCart = ''
+        else:
+            itemsInCart = len(items)
+    else:
+        itemsInCart = ''
     data = getCategory('mens-shoes')
-    return render_template('smartphones.html', title="Men's Shoes", data=data)
+    return render_template('smartphones.html', title="Men's Shoes", data=data, itemsInCart=itemsInCart)
 
 @app.route('/womensshoes')
 def womensShoes():
+    if current_user.is_authenticated:
+        items = CartItem.query.filter_by(user_id=current_user.id).all()
+        if not items:
+            itemsInCart = ''
+        else:
+            itemsInCart = len(items)
+    else:
+        itemsInCart = ''
     data = getCategory('womens-shoes')
-    return render_template('smartphones.html', title="Women's Shoes", data=data)
+    return render_template('smartphones.html', title="Women's Shoes", data=data, itemsInCart=itemsInCart)
