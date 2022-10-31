@@ -1,4 +1,3 @@
-from crypt import methods
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.models import User, CartItem
@@ -86,4 +85,15 @@ def category():
 
 @app.route('/smartphones')
 def smartPhones():
-    pass
+    data = getCategory('smartphones')
+    return render_template('smartphones.html', title='Smartphones', data=data)
+
+@app.route('/mensshoes')
+def mensShoes():
+    data = getCategory('mens-shoes')
+    return render_template('smartphones.html', title="Men's Shoes", data=data)
+
+@app.route('/womensshoes')
+def womensShoes():
+    data = getCategory('womens-shoes')
+    return render_template('smartphones.html', title="Women's Shoes", data=data)

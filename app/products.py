@@ -34,5 +34,6 @@ def getCategory(category):
     response = r.get(url)
     if not response.ok:
         return False
-    data = response.json()
+    res = response.json()
+    data = res['products']
     return data

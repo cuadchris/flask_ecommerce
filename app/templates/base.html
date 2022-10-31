@@ -23,9 +23,9 @@
                   Categories
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Smartphones</a></li>
-                  <li><a class="dropdown-item" href="#">Men's shoes</a></li>
-                  <li><a class="dropdown-item" href="#">Women's shoes</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('smartPhones') }}">Smartphones</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('mensShoes') }}">Men's shoes</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('womensShoes') }}">Women's shoes</a></li>
                 </ul>
               </li>
               {% if current_user.is_anonymous %}
