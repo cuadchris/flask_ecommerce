@@ -131,6 +131,7 @@ def womensShoes():
     return render_template('smartphones.html', title="Women's Shoes", data=data, itemsInCart=itemsInCart)
 
 @app.route('/cart')
+@login_required
 def cart():
     if current_user.is_authenticated:
         items = CartItem.query.filter_by(user_id=current_user.id).all()
