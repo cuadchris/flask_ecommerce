@@ -62,19 +62,8 @@
 
     async function emptyCart(){
 
-        items = document.getElementsByTagName("input")
-        ids = []
-        for (let i = 0; i < items.length; i++) {
-            ids.push(items[i].name);
-            
-        }
-        fetch('http://127.0.0.1:5000/emptycart', {
-        method: 'POST', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ids),
-        }).then(()=> {
+        fetch('http://127.0.0.1:5000/emptycart')
+        .then(()=> {
             window.location = 'http://127.0.0.1:5000/editcart'
         })
     }

@@ -15,7 +15,8 @@
 <div class="container text-center">
     <h1>Total due today: ${{total}}</h1>
     <small class="text-muted">Not including tax.</small><br>
-    <button class="btn btn-primary btn-lg my-3">Checkout</button>
+    <button class="btn btn-primary btn-lg my-3">Checkout</button><br>
+    <button onclick="{window.location = 'http://127.0.0.1:5000/editcart'}" class="btn btn-warning btn-small">Edit cart</button>
 </div>
 
 {% endblock %}

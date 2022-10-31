@@ -174,9 +174,6 @@ def editCart():
 @login_required
 def updateItem():
     data = request.get_json() # {'product_id': '59', 'quantity': '10'}
-    # if data['quantity'] <= 0:
-    #     flash("0 isn't valid. Use 'Remove'.")
-    #     return redirect(url_for('editCart'))
     item = CartItem.query.filter_by(product_id=data['product_id']).first()
     item.quantity = data['quantity']
     db.session.commit()
@@ -191,7 +188,7 @@ def removeItem():
     db.session.commit()
     return {'response': 'ok'}
 
-@app.post('/emptycart')
+@app.route('/emptycart')
 @login_required
 def emptyCart():
     items = CartItem.query.all()
