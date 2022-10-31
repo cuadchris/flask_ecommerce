@@ -9,7 +9,7 @@
     <title>{{title}}</title>
     <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
+          <a class="navbar-brand" href="#">FlasK É-Commerce</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -17,6 +17,16 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Categories
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Smartphones</a></li>
+                  <li><a class="dropdown-item" href="#">Men's shoes</a></li>
+                  <li><a class="dropdown-item" href="#">Women's shoes</a></li>
+                </ul>
               </li>
               {% if current_user.is_anonymous %}
               <li class="nav-item">
@@ -27,31 +37,28 @@
                 <a class="nav-link" href="{{ url_for('logout') }}">Log out</a>
               </li>
               {% endif %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
             </ul>
+            <button type="button" class="btn btn-primary position-relative me-3">
+              <i class="fa-sharp fa-solid fa-cart-shopping"></i>
+              <span id="cart-items" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{itemsInCart}}</span>
+            </button>
           </div>
         </div>
       </nav>
+    <script src="https://kit.fontawesome.com/8495ca4607.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+<div class="container text-center">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul style="list-style: none;">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</div>
     {% block content %} {% endblock content %}
     {% block script %} {% endblock script %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

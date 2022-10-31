@@ -9,10 +9,18 @@ from app.products import *
 @app.route('/')
 @app.route('/index')
 def index():
+    if current_user.is_authenticated:
+        items = CartItem.query.filter_by(user_id=current_user.id).all()
+        if not items:
+            itemsInCart = ''
+        else:
+            itemsInCart = len(items)
+    else:
+        itemsInCart = ''
     products = get5RandomProducts()
     for i in products:
         print(i['image'])
-    return render_template('index.html', title = 'Home', products=products)
+    return render_template('index.html', title = 'Home', products=products, itemsInCart=itemsInCart)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -51,6 +59,14 @@ def register():
 # 'GET' request will return template, 'POST' request will add to shopping cart.
 @app.route('/product/<item>', methods = ['GET', 'POST'])
 def product(item):
+    if current_user.is_authenticated:
+        items = CartItem.query.filter_by(user_id=current_user.id).all()
+        if not items:
+            itemsInCart = ''
+        else:
+            itemsInCart = len(items)
+    else:
+        itemsInCart = ''
     item = getProduct(item)
     if request.method == 'POST':
         product = CartItem()
@@ -59,4 +75,15 @@ def product(item):
         product.quantity = request.form['quantity']
         db.session.add(product)
         db.session.commit()
-    return render_template('product.html', title='Product', item=item)
+        flash('Item added to cart!')
+        return redirect(url_for('product', item=product.product_id))
+    return render_template('product.html', title='Product', item=item, itemsInCart=itemsInCart)
+
+@app.route('/category')
+def category():
+    products = get5RandomProducts()
+    return render_template('category.html', products=products)
+
+@app.route('/smartphones')
+def smartPhones():
+    pass

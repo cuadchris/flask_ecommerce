@@ -28,3 +28,11 @@ def get5RandomProducts():
         products.append(getProduct(id))
 
     return products
+
+def getCategory(category):
+    url = f'https://dummyjson.com/products/category/{category}'
+    response = r.get(url)
+    if not response.ok:
+        return False
+    data = response.json()
+    return data
