@@ -121,3 +121,16 @@ def womensShoes():
         itemsInCart = ''
     data = getCategory('womens-shoes')
     return render_template('smartphones.html', title="Women's Shoes", data=data, itemsInCart=itemsInCart)
+
+@app.route('/cart')
+def cart():
+    cartinfo = CartItem.query.filter_by(user_id = current_user.id).all()
+    cart = []
+    for item in cartinfo:
+        cart.append(getProduct(item.product_id))
+    quantities = [x.quantity for x in cartinfo]
+    prices = [x['price'] for x in cart]
+    joined = zip(quantities, prices)
+    total = sum(x*y for x,y in joined)
+
+    return render_template('cart.html', title='Cart', cart=cart, cartinfo=cartinfo, total=total)

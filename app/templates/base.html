@@ -38,10 +38,12 @@
               </li>
               {% endif %}
             </ul>
-            <button type="button" class="btn btn-primary position-relative me-3">
-              <i class="fa-sharp fa-solid fa-cart-shopping"></i>
-              <span id="cart-items" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{itemsInCart}}</span>
-            </button>
+            <a href="{{ url_for('cart') }}">
+              <button type="button" class="btn btn-primary position-relative me-3">
+                <i class="fa-sharp fa-solid fa-cart-shopping"></i>
+                <span id="cart-items" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{itemsInCart}}</span>
+              </button>
+            </a>
           </div>
         </div>
       </nav>

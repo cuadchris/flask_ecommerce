@@ -13,7 +13,7 @@ def getProduct(id):
         'description': data['description'],
         'price': data['price'],
         'rating': data['rating'],
-        'image': data['images'][0]
+        'image': data['thumbnail']
     }
     return product
 
