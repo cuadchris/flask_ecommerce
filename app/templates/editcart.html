@@ -1,0 +1,82 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+    <div class="container my-3">
+        <ul class="list-group list-group-flush w-75 mx-auto">
+          {% for item in cart %}
+          <li class="list-group-item">
+            <p style="display: inline-block">{{item['title']}}</p>
+            <span style="display: inline-block">
+              <input name="{{item['id']}}" class="form-control w-25" type="text" value="{{cartinfo[cart.index(item)].quantity}}">
+          </span>
+          <span style="float: right;">
+            <button onclick="updateQ(this.id)" id="{{item['id']}}" class="m-1 btn btn-primary">Update</button>
+            <button onclick="remove(this.id)" id="{{item['id']}}" class="m-1 btn btn-danger">Remove</button></span>
+          </li>
+          {% endfor %}
+        </ul>
+        <hr />
+      </div>
+      
+      <div class="container text-center">
+          <button onclick="emptyCart()" class="btn btn-danger m-2">Empty Cart</button>
+      </div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    async function updateQ (clicked_id) {
+
+        data = clicked_id
+        input = document.getElementsByName(data)[0].value
+        newq = {product_id: data, quantity: input}
+
+        fetch('http://127.0.0.1:5000/updateitem', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newq),
+        }).then(()=> {
+            window.location = 'http://127.0.0.1:5000/editcart'
+        })
+        
+            }
+
+    async function remove(clicked_id){
+
+        data = clicked_id
+
+        fetch('http://127.0.0.1:5000/removeitem', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        }).then(()=> {
+            window.location = 'http://127.0.0.1:5000/editcart'
+        })
+    }
+
+    async function emptyCart(){
+
+        items = document.getElementsByTagName("input")
+        ids = []
+        for (let i = 0; i < items.length; i++) {
+            ids.push(items[i].name);
+            
+        }
+        fetch('http://127.0.0.1:5000/emptycart', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ids),
+        }).then(()=> {
+            window.location = 'http://127.0.0.1:5000/editcart'
+        })
+    }
+</script>
+{% endblock script %}

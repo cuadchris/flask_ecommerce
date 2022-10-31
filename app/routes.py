@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.models import User, CartItem
@@ -102,7 +103,7 @@ def smartPhones():
     else:
         itemsInCart = ''
     data = getCategory('smartphones')
-    return render_template('smartphones.html', title='Smartphones', data=data, itemsInCart=itemsInCart)
+    return render_template('categories.html', title='Smartphones', data=data, itemsInCart=itemsInCart)
 
 @app.route('/mensshoes')
 def mensShoes():
@@ -115,7 +116,7 @@ def mensShoes():
     else:
         itemsInCart = ''
     data = getCategory('mens-shoes')
-    return render_template('smartphones.html', title="Men's Shoes", data=data, itemsInCart=itemsInCart)
+    return render_template('categories.html', title="Men's Shoes", data=data, itemsInCart=itemsInCart)
 
 @app.route('/womensshoes')
 def womensShoes():
@@ -128,7 +129,7 @@ def womensShoes():
     else:
         itemsInCart = ''
     data = getCategory('womens-shoes')
-    return render_template('smartphones.html', title="Women's Shoes", data=data, itemsInCart=itemsInCart)
+    return render_template('categories.html', title="Women's Shoes", data=data, itemsInCart=itemsInCart)
 
 @app.route('/cart')
 @login_required
@@ -151,3 +152,50 @@ def cart():
     total = sum(x*y for x,y in joined)
 
     return render_template('cart.html', title='Cart', cart=cart, cartinfo=cartinfo, total=total, itemsInCart=itemsInCart)
+
+@app.route('/editcart', methods = ['GET', 'POST'])
+@login_required
+def editCart():
+    if current_user.is_authenticated:
+        items = CartItem.query.filter_by(user_id=current_user.id).all()
+        if not items:
+            itemsInCart = ''
+        else:
+            itemsInCart = len(items)
+    else:
+        itemsInCart = ''
+    cartinfo = CartItem.query.filter_by(user_id = current_user.id).all()
+    cart = []
+    for item in cartinfo:
+        cart.append(getProduct(item.product_id))
+    return render_template('editcart.html', title="Edit Cart", cartinfo=cartinfo, cart=cart, itemsInCart=itemsInCart )
+
+@app.post('/updateitem')
+@login_required
+def updateItem():
+    data = request.get_json() # {'product_id': '59', 'quantity': '10'}
+    # if data['quantity'] <= 0:
+    #     flash("0 isn't valid. Use 'Remove'.")
+    #     return redirect(url_for('editCart'))
+    item = CartItem.query.filter_by(product_id=data['product_id']).first()
+    item.quantity = data['quantity']
+    db.session.commit()
+    return {'response': 'ok'}
+
+@app.post('/removeitem')
+@login_required
+def removeItem():
+    data = request.get_json()
+    item = CartItem.query.filter_by(product_id=data).first()
+    db.session.delete(item)
+    db.session.commit()
+    return {'response': 'ok'}
+
+@app.post('/emptycart')
+@login_required
+def emptyCart():
+    items = CartItem.query.all()
+    for i in items:
+        db.session.delete(i)
+    db.session.commit()
+    return {'response': 'ok'}
