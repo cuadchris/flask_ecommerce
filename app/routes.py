@@ -68,14 +68,22 @@ def product(item):
         itemsInCart = ''
     item = getProduct(item)
     if request.method == 'POST':
-        product = CartItem()
-        product.user_id = current_user.id
-        product.product_id = item['id']
-        product.quantity = request.form['quantity']
-        db.session.add(product)
-        db.session.commit()
-        flash('Item added to cart!')
-        return redirect(url_for('product', item=product.product_id))
+        current_item = CartItem.query.filter_by(product_id=item['id']).first()
+        if current_item:
+            new_total = int(current_item.quantity) + int(request.form['quantity'])
+            current_item.quantity = new_total
+            db.session.commit()
+            flash("You had these in your cart already, so we've updated the quantity.")
+            return redirect(url_for('product', item=current_item.product_id))
+        else:
+            product = CartItem()
+            product.user_id = current_user.id
+            product.product_id = item['id']
+            product.quantity = request.form['quantity']
+            db.session.add(product)
+            db.session.commit()
+            flash('Item added to cart!')
+            return redirect(url_for('product', item=product.product_id))
     return render_template('product.html', title='Product', item=item, itemsInCart=itemsInCart)
 
 # @app.route('/category')
@@ -124,6 +132,14 @@ def womensShoes():
 
 @app.route('/cart')
 def cart():
+    if current_user.is_authenticated:
+        items = CartItem.query.filter_by(user_id=current_user.id).all()
+        if not items:
+            itemsInCart = ''
+        else:
+            itemsInCart = len(items)
+    else:
+        itemsInCart = ''
     cartinfo = CartItem.query.filter_by(user_id = current_user.id).all()
     cart = []
     for item in cartinfo:
@@ -133,4 +149,4 @@ def cart():
     joined = zip(quantities, prices)
     total = sum(x*y for x,y in joined)
 
-    return render_template('cart.html', title='Cart', cart=cart, cartinfo=cartinfo, total=total)
+    return render_template('cart.html', title='Cart', cart=cart, cartinfo=cartinfo, total=total, itemsInCart=itemsInCart)
