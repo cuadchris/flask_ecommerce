@@ -31,6 +31,9 @@
 
         data = clicked_id
         input = document.getElementsByName(data)[0].value
+        if (input <= 0) {
+            return alert('Enter valid quantity, or use "Remove:.')
+        }
         newq = {product_id: data, quantity: input}
 
         fetch('http://127.0.0.1:5000/updateitem', {
