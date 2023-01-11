@@ -36,14 +36,14 @@
         }
         newq = {product_id: data, quantity: input}
 
-        fetch('http://127.0.0.1:5000/updateitem', {
+        fetch('https://flask-store.onrender.com/updateitem', {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(newq),
         }).then(()=> {
-            window.location = 'http://127.0.0.1:5000/editcart'
+            window.location = 'https://flask-store.onrender.com/editcart'
         })
         
             }
@@ -52,22 +52,22 @@
 
         data = clicked_id
 
-        fetch('http://127.0.0.1:5000/removeitem', {
+        fetch('https://flask-store.onrender.com/removeitem', {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
         }).then(()=> {
-            window.location = 'http://127.0.0.1:5000/editcart'
+            window.location = 'https://flask-store.onrender.com/editcart'
         })
     }
 
     async function emptyCart(){
 
-        fetch('http://127.0.0.1:5000/emptycart')
+        fetch('https://flask-store.onrender.com/emptycart')
         .then(()=> {
-            window.location = 'http://127.0.0.1:5000/editcart'
+            window.location = 'https://flask-store.onrender.com/editcart'
         })
     }
 </script>
